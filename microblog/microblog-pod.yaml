@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: microblog-pod
+  labels:
+    app: microblog
+    tier: frontend
+spec:
+  containers:
+    - name: microblog-pod
+      image: docker.io/rafaelrojas1181/microblog:1.0   
+      ports:
+       - containerPort: 5000
+      env:
+      - name: SECRET_KEY
+        value: "HaShEdSeCrEtKeY"
+      - name: MAIL_SERVER
+        value: "smtp.googlemail.com"
+      - name: MAIL_PORT
+        value: "587" 
+      - name: MAIL_USE_TLS
+        value: "true" 
+      - name: MAIL_USERNAME
+        value: "mygmail@test1.com"
+      - name: MAIL_PASSWORD
+        value: test1 
+      - name: DATABASE_URL
+        value: "mysql+pymysql://microblog:microdbpwd@$(MYSQL_NP_SERVICE_HOST)/microblog" 
