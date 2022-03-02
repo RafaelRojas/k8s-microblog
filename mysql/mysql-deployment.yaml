@@ -5,6 +5,7 @@ metadata:
   labels:
     app: microblog
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: microblog
@@ -20,16 +21,33 @@ spec:
       containers:
       - image: mysql:5.6
         name: mysql
+        ports:
+          - containerPort: 3306
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: password
-        ports:
-        - containerPort: 3306
+
           name: mysql
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
+        - name: mysql-initdb
+          mountPath: /docker-entrypoint-initdb.d
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pv-claim
+      - name: mysql-initdb
+        configMap:
+          name: initdb
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: initdb
+data:
+  initdb.sql: |
+    create database microblog character set utf8 collate utf8_bin;
+    create user 'microblog'@'%' identified by 'microdbpwd';
+    grant all privileges on microblog.* to 'microblog'@'%';
+    flush privileges;

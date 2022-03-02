@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: microblog-pod
-        image: docker.io/rafaelrojas1181/microblog:1.0
+        image: docker.io/rafaelrojas1181/microblog:dev1
         ports:
         - containerPort: 5000
         env:
@@ -37,4 +37,4 @@ spec:
           - name: MAIL_PASSWORD
             value: test1 
           - name: DATABASE_URL
-            value: "mysql+pymysql://microblog:microdbpwd@$(MYSQL_NP_SERVICE_HOST)/microblog"           
+            value: "mysql+pymysql://microblog:microdbpwd@$(MICROBLOG_MYSQL_SERVICE_SERVICE_HOST)/microblog"           
